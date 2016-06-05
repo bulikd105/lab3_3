@@ -11,12 +11,18 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
+@PrepareForTest(TimeSourceFactory .class)
 public class OrderTimeTest 
 {
 	@Test
-	public void test() 
+    public void test() 
 	{
-		fail("Not yet implemented");
-	}
-
+        mockStatic(TimeSourceFactory .class);
+        TimeSourceImpl timeSource = new TimeSourceImpl();
+        timeSource.dateTimeNow().plusHours(20);
+        when(TimeSourceFactory.timeSource()).thenReturn(timeSource);
+        Order order = new Order();
+        order.submit();
+        order.confirm();
+    }
 }
